@@ -26,22 +26,28 @@
 
 #include <QHBoxLayout>
 #include <QResizeEvent>
+#include <QSplitter>
 
 ClientPage::ClientPage(QWidget* parent)
     : QWidget(parent),
       _clientsSidebar{ new ClientsSidebar(this) },
       _messageViewWidget{ new MessageViewWidget(this) }
 {
+    auto* splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->setHandleWidth(3);
+
+    splitter->addWidget(_clientsSidebar);
+    splitter->addWidget(_messageViewWidget);
+
+    splitter->setSizes({ 250, 600 });
+
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
-
-    layout->addWidget(_clientsSidebar, 35);
-    layout->addWidget(_messageViewWidget, 65);
-
-    setStyleSheet("background-color: black;");
+    layout->addWidget(splitter);
 
     setLayout(layout);
+    setStyleSheet("background-color: black;");
 }
 
 void ClientPage::resizeEvent(QResizeEvent* event)
