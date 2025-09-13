@@ -1,16 +1,10 @@
-cmake_minimum_required(VERSION 3.30)
+add_subdirectory(UI)
 
-file(GLOB_RECURSE SOURCES
-        "*.h"
-        "*.cpp"
-)
+set(CPP_SOURCES main.cpp)
+set_source_files_properties(${CPP_SOURCES} PROPERTIES LANGUAGE CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-
-add_executable(${PROJECT_NAME} ${SOURCES})
-
-target_link_libraries(Messenger PRIVATE Qt6::Widgets)
+add_executable(${PROJECT_NAME} ${CPP_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        Qt
+    DM::UI
 )
