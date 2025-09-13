@@ -36,6 +36,9 @@ public:
 private:
     void setupUi();
     void autoResizeWidget();
+    void setupConnections();
+
+    void onFileExplorerButtonCLicked();
 
 private:
     QTextEdit* _inputField{ nullptr };

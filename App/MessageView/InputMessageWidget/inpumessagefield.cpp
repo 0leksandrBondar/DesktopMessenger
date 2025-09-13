@@ -1,7 +1,9 @@
 #include "inpumessagefield.h"
 
+#include <QFileDialog>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QStandardPaths>
 #include <QTextEdit>
 
 InputMessageField::InputMessageField(QWidget* parent)
@@ -11,7 +13,7 @@ InputMessageField::InputMessageField(QWidget* parent)
       _fileExplorerButton{ new QPushButton("...", this) }
 {
     setupUi();
-    connect(_inputField, &QTextEdit::textChanged, this, &InputMessageField::autoResizeWidget);
+    setupConnections();
 }
 
 void InputMessageField::setupUi()
@@ -67,4 +69,29 @@ void InputMessageField::autoResizeWidget()
         docHeight = 40;
 
     setFixedHeight(docHeight);
+}
+
+void InputMessageField::setupConnections()
+{
+    connect(_inputField, &QTextEdit::textChanged, this, &InputMessageField::autoResizeWidget);
+    connect(_fileExplorerButton, &QPushButton::clicked, this,
+            &InputMessageField::onFileExplorerButtonCLicked);
+}
+
+void InputMessageField::onFileExplorerButtonCLicked()
+{
+    static const QString filter
+        = "Image files (*.avif *.avifs *.bmp *.gif *.heic *.heif *.jpeg *.jpg *.jxl *.pbm *.pgm "
+          "*.png *.ppm *.qoi *.webp *.xbm *.xpm);;All files (*.*)";
+
+    static const QString downloadsPath
+        = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+
+    const QString fileName
+        = QFileDialog::getOpenFileName(this, "Select an image", downloadsPath, filter);
+
+    if (!fileName.isEmpty())
+    {
+        qDebug() << "Selected file:" << fileName;
+    }
 }
