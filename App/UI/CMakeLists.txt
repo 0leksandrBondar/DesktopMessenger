@@ -13,3 +13,5 @@ add_library(DM::${MAIN_NAME} ALIAS ${TARGET_NAME})
 target_link_libraries(${TARGET_NAME} PUBLIC
     Qt
 )
+
+DMAddCompileOptionsTo(${TARGET_NAME})
