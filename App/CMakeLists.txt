@@ -3,8 +3,12 @@ cmake_minimum_required(VERSION 3.30)
 file(GLOB SOURCES
         "*.h"
         "*.cpp"
+
         "MessageView/*.h"
         "MessageView/*.cpp"
+        "MessageView/InputMessageWidget/*.h"
+        "MessageView/InputMessageWidget/*.cpp"
+
         "ClientsSidebar/*.h"
         "ClientsSidebar/*.cpp"
 )

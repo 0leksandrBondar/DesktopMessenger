@@ -20,27 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "messageviewwidget.h"
-#include "InputMessageWidget/inpumessagefield.h"
+#pragma once
 
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QWidget>
 
-MessageViewWidget::MessageViewWidget(QWidget* parent)
-    : QWidget(parent), _inputMessageField{ new InputMessageField(this) }
+class QTextEdit;
+class QPushButton;
+
+class InputMessageField final : public QWidget
 {
-    setupDebugUI();
-}
+    Q_OBJECT
+public:
+    explicit InputMessageField(QWidget* parent = nullptr);
 
-void MessageViewWidget::setupDebugUI()
-{
-    // for widget
-    auto* layout = new QVBoxLayout(this);
-    layout->setSpacing(0);
-    layout->setContentsMargins(5, 0, 5, 0);
-    setLayout(layout);
-    setStyleSheet("background-color: black;");
+private:
+    void setupUi();
+    void autoResizeWidget();
 
-    layout->setAlignment(Qt::AlignBottom);
-    layout->addWidget(_inputMessageField);
-}
+private:
+    QTextEdit* _inputField{ nullptr };
+    QPushButton* _sendButton{ nullptr };
+    QPushButton* _fileExplorerButton{ nullptr };
+};
