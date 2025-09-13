@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "clientpage.h"
-#include "ClientsSidebar/clientssidebar.h"
+#include "ClientsSIdebar/clientssidebar.h"
 #include "MessageView/messageviewwidget.h"
 
 #include <QHBoxLayout>
