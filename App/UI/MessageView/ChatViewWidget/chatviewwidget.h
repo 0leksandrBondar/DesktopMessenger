@@ -31,12 +31,11 @@ class ChatViewWidget final : public QWidget
 public:
     explicit ChatViewWidget(QWidget* parent = nullptr);
 
-    void addMessage(const QString& msg);
+    void addMessage(const QString& msg, const bool isMyMsg = true);
 
 private:
     void setupUi();
 
 private:
-    bool _isMyMessage{ true };
     QListWidget* _messageList{ nullptr };
 };

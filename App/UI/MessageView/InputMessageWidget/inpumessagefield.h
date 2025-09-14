@@ -33,11 +33,15 @@ class InputMessageField final : public QWidget
 public:
     explicit InputMessageField(QWidget* parent = nullptr);
 
+signals:
+    void sendButtonClicked(const QString& smg, bool isMyMsg = true);
+
 private:
     void setupUi();
     void autoResizeWidget();
     void setupConnections();
 
+    void onSendButtonClicked();
     void onFileExplorerButtonCLicked();
 
 private:

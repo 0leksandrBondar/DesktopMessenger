@@ -31,7 +31,7 @@ ChatViewWidget::ChatViewWidget(QWidget* parent)
     setupUi();
 }
 
-void ChatViewWidget::addMessage(const QString& msg)
+void ChatViewWidget::addMessage(const QString& msg, const bool isMyMsg)
 {
     auto item = new QListWidgetItem(msg);
 
@@ -41,7 +41,7 @@ void ChatViewWidget::addMessage(const QString& msg)
     item->setFont(font);
     item->setSizeHint(QSize(0, 65));
 
-    const auto hAlign = _isMyMessage ? Qt::AlignRight : Qt::AlignLeft;
+    const auto hAlign = isMyMsg ? Qt::AlignRight : Qt::AlignLeft;
     item->setTextAlignment(hAlign | Qt::AlignVCenter);
 
     _messageList->addItem(item);
@@ -56,9 +56,6 @@ void ChatViewWidget::setupUi()
     setLayout(mainLayout);
     setStyleSheet("background-color: black;");
 
-    _messageList->setLayoutMode(QListView::Batched);
-    _messageList->setFlow(QListView::TopToBottom); // направление элементов
-    _messageList->setLayoutDirection(Qt::LeftToRight);
-
     addMessage("This is first text message");
+    addMessage("This is second text message", false);
 }

@@ -29,10 +29,14 @@ class InputMessageField;
 
 class MessageViewWidget final : public QWidget
 {
+    Q_OBJECT
 public:
     explicit MessageViewWidget(QWidget* parent = nullptr);
 
     void setupDebugUI();
+
+private:
+    void setupConnections();
 
 private:
     ChatViewWidget* _chatViewWidget{ nullptr };

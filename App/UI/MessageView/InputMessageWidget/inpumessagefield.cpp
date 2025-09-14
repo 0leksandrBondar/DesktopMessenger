@@ -74,8 +74,18 @@ void InputMessageField::autoResizeWidget()
 void InputMessageField::setupConnections()
 {
     connect(_inputField, &QTextEdit::textChanged, this, &InputMessageField::autoResizeWidget);
+    connect(_sendButton, &QPushButton::clicked, this, &InputMessageField::onSendButtonClicked);
     connect(_fileExplorerButton, &QPushButton::clicked, this,
             &InputMessageField::onFileExplorerButtonCLicked);
+}
+
+void InputMessageField::onSendButtonClicked()
+{
+    if (_inputField->toPlainText().isEmpty())
+        return;
+
+    emit sendButtonClicked(_inputField->toPlainText());
+    _inputField->clear();
 }
 
 void InputMessageField::onFileExplorerButtonCLicked()

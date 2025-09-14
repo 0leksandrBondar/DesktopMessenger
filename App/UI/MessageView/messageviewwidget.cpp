@@ -33,6 +33,7 @@ MessageViewWidget::MessageViewWidget(QWidget* parent)
       _inputMessageField{ new InputMessageField(this) }
 {
     setupDebugUI();
+    setupConnections();
 }
 
 void MessageViewWidget::setupDebugUI()
@@ -47,4 +48,10 @@ void MessageViewWidget::setupDebugUI()
     layout->setAlignment(Qt::AlignBottom);
     layout->addWidget(_chatViewWidget);
     layout->addWidget(_inputMessageField);
+}
+
+void MessageViewWidget::setupConnections()
+{
+    connect(_inputMessageField, &InputMessageField::sendButtonClicked, _chatViewWidget,
+            &ChatViewWidget::addMessage);
 }
