@@ -21,13 +21,16 @@
 // SOFTWARE.
 
 #include "messageviewwidget.h"
+#include "ChatViewWidget/chatviewwidget.h"
 #include "InputMessageWidget/inpumessagefield.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
 
 MessageViewWidget::MessageViewWidget(QWidget* parent)
-    : QWidget(parent), _inputMessageField{ new InputMessageField(this) }
+    : QWidget(parent),
+      _chatViewWidget{ new ChatViewWidget },
+      _inputMessageField{ new InputMessageField(this) }
 {
     setupDebugUI();
 }
@@ -42,5 +45,6 @@ void MessageViewWidget::setupDebugUI()
     setStyleSheet("background-color: black;");
 
     layout->setAlignment(Qt::AlignBottom);
+    layout->addWidget(_chatViewWidget);
     layout->addWidget(_inputMessageField);
 }

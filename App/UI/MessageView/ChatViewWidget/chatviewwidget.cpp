@@ -20,21 +20,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "chatviewwidget.h"
 
-#include <QWidget>
+#include <QListWidget>
+#include <QVBoxLayout>
 
-class ChatViewWidget;
-class InputMessageField;
-
-class MessageViewWidget final : public QWidget
+ChatViewWidget::ChatViewWidget(QWidget* parent)
+    : QWidget(parent), _messageList{ new QListWidget(this) }
 {
-public:
-    explicit MessageViewWidget(QWidget* parent = nullptr);
+    setupUi();
+}
 
-    void setupDebugUI();
+void ChatViewWidget::addMessage(const QString& msg)
+{
+    auto item = new QListWidgetItem(msg);
 
-private:
-    ChatViewWidget* _chatViewWidget{ nullptr };
-    InputMessageField* _inputMessageField{ nullptr };
-};
+    QFont font = item->font();
+    font.setPointSize(14);
+
+    item->setFont(font);
+    item->setSizeHint(QSize(0, 65));
+
+    const auto hAlign = _isMyMessage ? Qt::AlignRight : Qt::AlignLeft;
+    item->setTextAlignment(hAlign | Qt::AlignVCenter);
+
+    _messageList->addItem(item);
+}
+
+void ChatViewWidget::setupUi()
+{
+    auto* mainLayout = new QVBoxLayout(this);
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addWidget(_messageList);
+    setLayout(mainLayout);
+    setStyleSheet("background-color: black;");
+
+    _messageList->setLayoutMode(QListView::Batched);
+    _messageList->setFlow(QListView::TopToBottom); // направление элементов
+    _messageList->setLayoutDirection(Qt::LeftToRight);
+
+    addMessage("This is first text message");
+}

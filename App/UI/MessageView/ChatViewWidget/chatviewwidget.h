@@ -24,17 +24,19 @@
 
 #include <QWidget>
 
-class ChatViewWidget;
-class InputMessageField;
+class QListWidget;
 
-class MessageViewWidget final : public QWidget
+class ChatViewWidget final : public QWidget
 {
 public:
-    explicit MessageViewWidget(QWidget* parent = nullptr);
+    explicit ChatViewWidget(QWidget* parent = nullptr);
 
-    void setupDebugUI();
+    void addMessage(const QString& msg);
 
 private:
-    ChatViewWidget* _chatViewWidget{ nullptr };
-    InputMessageField* _inputMessageField{ nullptr };
+    void setupUi();
+
+private:
+    bool _isMyMessage{ true };
+    QListWidget* _messageList{ nullptr };
 };
