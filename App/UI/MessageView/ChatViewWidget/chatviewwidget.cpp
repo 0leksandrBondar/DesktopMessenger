@@ -25,10 +25,13 @@
 #include <QListWidget>
 #include <QVBoxLayout>
 
+#include <UI/MessageView/MessageWidget/messagewidget.h>
+
 ChatViewWidget::ChatViewWidget(QWidget* parent)
     : QWidget(parent), _messageList{ new QListWidget(this) }
 {
     setupUi();
+    addMessage(MessageData());
 }
 
 void ChatViewWidget::addMessage(const QString& msg, const bool isMyMsg)
@@ -45,6 +48,16 @@ void ChatViewWidget::addMessage(const QString& msg, const bool isMyMsg)
     item->setTextAlignment(hAlign | Qt::AlignVCenter);
 
     _messageList->addItem(item);
+}
+
+void ChatViewWidget::addMessage(const MessageData& msg, const bool isMyMsg)
+{
+    auto* item = new QListWidgetItem();
+    auto* widget = new MessageWidget();
+
+    item->setSizeHint(widget->size());
+    _messageList->addItem(item);
+    _messageList->setItemWidget(item, widget);
 }
 
 void ChatViewWidget::setupUi()

@@ -52,6 +52,6 @@ void MessageViewWidget::setupDebugUI()
 
 void MessageViewWidget::setupConnections()
 {
-    connect(_inputMessageField, &InputMessageField::sendButtonClicked, _chatViewWidget,
-            &ChatViewWidget::addMessage);
+    // connect(_inputMessageField, &InputMessageField::sendButtonClicked, _chatViewWidget,
+    //         &ChatViewWidget::addMessage);
 }

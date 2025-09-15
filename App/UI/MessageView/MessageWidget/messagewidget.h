@@ -24,27 +24,22 @@
 
 #include <QWidget>
 
-class QListWidget;
-class MessageWidget;
+class QVBoxLayout;
 
-struct MessageData
-{
-    QString sender;
-    QString receiver;
-    QString textMessage;
-};
-
-class ChatViewWidget final : public QWidget
+class MessageWidget final : public QWidget
 {
 public:
-    explicit ChatViewWidget(QWidget* parent = nullptr);
-
-    void addMessage(const QString& msg, const bool isMyMsg = true);
-    void addMessage(const MessageData& msg, const bool isMyMsg = true);
+    explicit MessageWidget(QWidget* parent = nullptr);
 
 private:
+    // ------------------ COMPOSE MESSAGE UI -------------
+
     void setupUi();
+    void addHeader();
+    void addBody();
+    void addFooter();
 
 private:
-    QListWidget* _messageList{ nullptr };
+    static constexpr int _maxWidth{ 400 };
+    static constexpr int _maxHeight{ 700 };
 };
