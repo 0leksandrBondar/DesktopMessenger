@@ -24,21 +24,18 @@
 
 #include <QWidget>
 
-class ClientsSidebar;
-class MessageViewWidget;
+class QLabel;
 
-class ClientPage final : public QWidget
+class ChatHeaderPanel final : public QWidget
 {
 public:
-    explicit ClientPage(QWidget* parent = nullptr);
+    explicit ChatHeaderPanel(QWidget* parent = nullptr);
+
+    void setReceiverName(const QString& name);
 
 private:
-    void setupConnections();
-
-protected:
-    void resizeEvent(QResizeEvent* event) override;
+    void setupUi();
 
 private:
-    ClientsSidebar* _clientsSidebar{ nullptr };
-    MessageViewWidget* _messageViewWidget{ nullptr };
+    QLabel* _receiverName{};
 };

@@ -20,44 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "messageviewwidget.h"
-#include "ChatHeaderPanel/chatheaderpanel.h"
-#include "ChatViewWidget/chatviewwidget.h"
-#include "InputMessageWidget/inpumessagefield.h"
+#include "chatheaderpanel.h"
 
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
 
-MessageViewWidget::MessageViewWidget(QWidget* parent)
-    : QWidget(parent),
-      _chatViewWidget{ new ChatViewWidget() },
-      _chatHeaderPanel{ new ChatHeaderPanel() },
-      _inputMessageField{ new InputMessageField() }
+ChatHeaderPanel::ChatHeaderPanel(QWidget* parent)
+    : QWidget(parent), _receiverName{ new QLabel("TEST") }
 {
-    setupDebugUI();
-    setupConnections();
+    setupUi();
 }
 
-void MessageViewWidget::setupDebugUI()
+void ChatHeaderPanel::setReceiverName(const QString& name) { _receiverName->setText(name); }
+
+void ChatHeaderPanel::setupUi()
 {
-    // for widget
-    auto* layout = new QVBoxLayout(this);
+    setFixedHeight(50);
+
+    auto* layout = new QHBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(5, 0, 5, 0);
+
+    QFont font;
+    font.setBold(true);
+    font.setPointSize(15);
+    _receiverName->setFont(font);
+
+    layout->addWidget(_receiverName);
+
     setLayout(layout);
-    setStyleSheet("background-color: black;");
-
-    layout->setAlignment(Qt::AlignTop);
-
-    layout->addWidget(_chatHeaderPanel);
-    layout->addWidget(_chatViewWidget);
-    layout->addWidget(_inputMessageField);
-}
-
-void MessageViewWidget::updateChat(const QString& name) { _chatHeaderPanel->setReceiverName(name); }
-
-void MessageViewWidget::setupConnections()
-{
-    // connect(_inputMessageField, &InputMessageField::sendButtonClicked, _chatViewWidget,
-    //         &ChatViewWidget::addMessage);
 }

@@ -60,6 +60,8 @@ void ClientsSidebar::setupConnections()
 {
     connect(_clientsSearchBar, &ClientsSearchBar::filterChanged, this,
             &ClientsSidebar::onFilterChanged);
+    connect(_clientListWidget, &QListWidget::itemSelectionChanged,
+            [this]() { emit chatSelected(_clientListWidget->currentItem()->text()); });
 }
 
 void ClientsSidebar::onFilterChanged(const QString& text) { _clientListWidget->filterList(text); }

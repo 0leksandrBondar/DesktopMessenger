@@ -48,6 +48,13 @@ ClientPage::ClientPage(QWidget* parent)
 
     setLayout(layout);
     setStyleSheet("background-color: black;");
+    setupConnections();
+}
+
+void ClientPage::setupConnections()
+{
+    connect(_clientsSidebar, &ClientsSidebar::chatSelected, _messageViewWidget,
+            &MessageViewWidget::updateChat);
 }
 
 void ClientPage::resizeEvent(QResizeEvent* event)

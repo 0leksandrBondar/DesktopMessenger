@@ -25,6 +25,7 @@
 #include <QWidget>
 
 class ChatViewWidget;
+class ChatHeaderPanel;
 class InputMessageField;
 
 class MessageViewWidget final : public QWidget
@@ -35,10 +36,13 @@ public:
 
     void setupDebugUI();
 
+    void updateChat(const QString& name);
+
 private:
     void setupConnections();
 
 private:
     ChatViewWidget* _chatViewWidget{ nullptr };
+    ChatHeaderPanel* _chatHeaderPanel{ nullptr };
     InputMessageField* _inputMessageField{ nullptr };
 };

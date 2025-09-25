@@ -35,6 +35,9 @@ public:
 
     void setupDebugUI();
 
+signals:
+    void chatSelected(const QString& chatName);
+
 private:
     void setupConnections();
 
