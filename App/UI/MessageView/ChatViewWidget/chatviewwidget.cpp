@@ -31,7 +31,7 @@ ChatViewWidget::ChatViewWidget(QWidget* parent)
     : QWidget(parent), _messageList{ new QListWidget(this) }
 {
     setupUi();
-    addMessage(MessageData());
+    addMessage(MessageData(), false);
 }
 
 void ChatViewWidget::addMessage(const QString& msg, const bool isMyMsg)
@@ -52,12 +52,29 @@ void ChatViewWidget::addMessage(const QString& msg, const bool isMyMsg)
 
 void ChatViewWidget::addMessage(const MessageData& msg, const bool isMyMsg)
 {
+    auto* container = new QWidget();
     auto* item = new QListWidgetItem();
     auto* widget = new MessageWidget();
+    auto* hLayout = new QHBoxLayout(container);
 
-    item->setSizeHint(widget->size());
+    const auto hAlign = isMyMsg ? Qt::AlignRight : Qt::AlignLeft;
+
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->addStretch();
+
+    if (isMyMsg)
+        hLayout->addWidget(widget, 0, Qt::AlignRight);
+    else
+        hLayout->insertWidget(0, widget, 0, Qt::AlignLeft);
+
+    _messageList->setResizeMode(QListView::Adjust);
+    _messageList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+
+    item->setSizeHint(widget->sizeHint());
+    item->setTextAlignment(hAlign | Qt::AlignVCenter);
+
     _messageList->addItem(item);
-    _messageList->setItemWidget(item, widget);
+    _messageList->setItemWidget(item, container);
 }
 
 void ChatViewWidget::setupUi()
@@ -68,7 +85,4 @@ void ChatViewWidget::setupUi()
     mainLayout->addWidget(_messageList);
     setLayout(mainLayout);
     setStyleSheet("background-color: black;");
-
-    addMessage("This is first text message");
-    addMessage("This is second text message", false);
 }

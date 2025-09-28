@@ -31,6 +31,8 @@ class MessageWidget final : public QWidget
 public:
     explicit MessageWidget(QWidget* parent = nullptr);
 
+    QSize sizeHint() const override;
+
 private:
     // ------------------ COMPOSE MESSAGE UI -------------
 
