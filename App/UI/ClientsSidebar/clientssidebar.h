@@ -35,15 +35,24 @@ public:
 
     void setupDebugUI();
 
+    void resetChatSelection()
+    {
+        _isChatSelected = false;
+        emit chatSelected();
+    }
+    [[nodiscard]] bool isChatSelected() const { return _isChatSelected; }
+
 signals:
-    void chatSelected(const QString& chatName);
+    void chatSelected(const QString& chatName = "");
 
 private:
     void setupConnections();
 
-    void onFilterChanged(const QString& text);
+    void onFilterChanged(const QString& text) const;
 
 private:
+    bool _isChatSelected{ false };
+
     ClientsSearchBar* _clientsSearchBar{ nullptr };
     ClientsListWidget* _clientListWidget{ nullptr };
 };

@@ -25,46 +25,100 @@
 #include "MessageView/messageviewwidget.h"
 
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QResizeEvent>
 #include <QSplitter>
 
 ClientPage::ClientPage(QWidget* parent)
     : QWidget(parent),
+      _hSplitter{ new QSplitter(Qt::Horizontal, this) },
       _clientsSidebar{ new ClientsSidebar(this) },
+      _emptyMessageViewWidget{ new QWidget(this) },
       _messageViewWidget{ new MessageViewWidget(this) }
 {
-    auto* splitter = new QSplitter(Qt::Horizontal, this);
-    splitter->setHandleWidth(3);
+    setupEmptyMessageViewWidget();
 
-    splitter->addWidget(_clientsSidebar);
-    splitter->addWidget(_messageViewWidget);
+    _hSplitter->setHandleWidth(3);
+    _hSplitter->addWidget(_clientsSidebar);
+    _hSplitter->addWidget(_messageViewWidget);
 
-    splitter->setSizes({ 250, 600 });
+    _hSplitter->setSizes({ 250, 600 });
 
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
-    layout->addWidget(splitter);
+    layout->addWidget(_hSplitter);
 
-    setLayout(layout);
     setStyleSheet("background-color: black;");
     setupConnections();
+
+    switchMessageViewWidget();
 }
 
 void ClientPage::setupConnections()
 {
     connect(_clientsSidebar, &ClientsSidebar::chatSelected, _messageViewWidget,
             &MessageViewWidget::updateChat);
+
+    connect(_clientsSidebar, &ClientsSidebar::chatSelected,
+            [this]()
+            {
+                const bool isChatSelected = _clientsSidebar->isChatSelected();
+
+                switchMessageViewWidget();
+                if (_messageViewWidget->isHidden() && isChatSelected)
+                {
+                    _clientsSidebar->hide();
+                    _messageViewWidget->show();
+                }
+                if (!_clientsSidebar->isVisible() && !isChatSelected)
+                {
+                    _clientsSidebar->show();
+                }
+            });
+}
+
+void ClientPage::setupEmptyMessageViewWidget() const
+{
+    auto* layout = new QVBoxLayout(_emptyMessageViewWidget);
+
+    const auto label = new QLabel("Select a chat to start messaging");
+    layout->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+    layout->addWidget(label);
+    _emptyMessageViewWidget->setLayout(layout);
+}
+
+void ClientPage::switchMessageViewWidget() const
+{
+    const QWidget* currentRightWidget = _hSplitter->widget(1);
+    QWidget* newRightWidget = _clientsSidebar->isChatSelected()
+                                  ? static_cast<QWidget*>(_messageViewWidget)
+                                  : static_cast<QWidget*>(_emptyMessageViewWidget);
+
+    if (currentRightWidget != newRightWidget)
+        _hSplitter->replaceWidget(1, newRightWidget);
+
+    _hSplitter->setStretchFactor(0, 1);
+    _hSplitter->setStretchFactor(1, 1);
 }
 
 void ClientPage::resizeEvent(QResizeEvent* event)
 {
-    static constexpr float minWidth{ 630 };        // min width to display ClientsListWidget
-    static constexpr bool isChatSelected{ false }; // temp
+    static constexpr float minWidth{ 630 }; // min width to display ClientsListWidget
 
-    QWidget* target = isChatSelected ? static_cast<QWidget*>(_clientsSidebar)
-                                     : static_cast<QWidget*>(_messageViewWidget);
+    QWidget* targetMessageViewWidget = _clientsSidebar->isChatSelected()
+                                           ? static_cast<QWidget*>(_messageViewWidget)
+                                           : static_cast<QWidget*>(_emptyMessageViewWidget);
+
+    QWidget* target = _clientsSidebar->isChatSelected() ? static_cast<QWidget*>(_clientsSidebar)
+                                                        : targetMessageViewWidget;
 
     const bool tooNarrow = event->size().width() <= minWidth;
     target->setVisible(!tooNarrow);
+}
+
+void ClientPage::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape)
+        _clientsSidebar->resetChatSelection();
 }

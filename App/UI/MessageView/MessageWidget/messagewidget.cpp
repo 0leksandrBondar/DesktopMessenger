@@ -29,10 +29,6 @@ void MessageWidget::setupUi()
     addHeader(); // logo, sender
     addBody();   // content text/image/file ...
     addFooter(); // time
-
-    qDebug() << size();
-    qDebug() << sizeHint();
-    adjustSize();
 }
 
 void MessageWidget::addHeader()
@@ -83,7 +79,7 @@ void MessageWidget::addBody()
     messageBody->setFont(font);
     messageBody->setWordWrap(true);
     messageBody->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-    messageBody->setMaximumWidth(_maxWidth - 20);
+    messageBody->setMaximumWidth(_maxWidth);
     auto bodyLayout = new QVBoxLayout();
     bodyLayout->addWidget(messageBody);
 

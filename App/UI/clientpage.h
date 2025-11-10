@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <QSplitter>
 #include <QWidget>
 
 class ClientsSidebar;
@@ -34,11 +35,17 @@ public:
 
 private:
     void setupConnections();
+    void setupLayout();
+    void setupEmptyMessageViewWidget() const;
+    void switchMessageViewWidget() const;
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    QSplitter* _hSplitter{ nullptr };
     ClientsSidebar* _clientsSidebar{ nullptr };
+    QWidget* _emptyMessageViewWidget{ nullptr };
     MessageViewWidget* _messageViewWidget{ nullptr };
 };
