@@ -22,6 +22,9 @@
 
 #include "inpumessagefield.h"
 
+#include "UI/MessageView/ChatViewWidget/chatviewwidget.h"
+
+#include <QEvent>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -125,5 +128,13 @@ void InputMessageField::onFileExplorerButtonCLicked()
     if (!fileName.isEmpty())
     {
         qDebug() << "Selected file:" << fileName;
+    }
+}
+void InputMessageField::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+    {
+        if (event->modifiers() & Qt::ControlModifier)
+            onSendButtonClicked();
     }
 }

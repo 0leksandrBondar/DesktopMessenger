@@ -44,6 +44,9 @@ private:
     void onSendButtonClicked();
     void onFileExplorerButtonCLicked();
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private:
     QTextEdit* _inputField{ nullptr };
     QPushButton* _sendButton{ nullptr };
